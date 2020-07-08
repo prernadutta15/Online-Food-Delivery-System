@@ -1,0 +1,8 @@
+1 350 Shepards Pie
+2 200 Pan Fried Hakka Noodles
+3 250 Rosetti and Pinnacio Coffee
+4 350 Alfredo Steak Burger
+5 350 Sausage Pizza
+6 200 Pineapple Custard
+7 250 Mushroom and Pinaccio Salad
+8 250 Chocolate Shake

@@ -1,0 +1,15 @@
+1 Continental
+1 Beverage
+2 Continental
+2 Chinese
+2 Western
+3 Continental
+3 Chinese
+4 Indian
+5 Continental
+5 Italian
+5 French
+6 Italian
+6 Mexican
+6 Continental
+6 Chinese

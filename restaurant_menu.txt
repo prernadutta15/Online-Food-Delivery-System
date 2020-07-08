@@ -1,0 +1,51 @@
+1 250 Yorkshire Patties
+1 350 Caesar Salad
+1 150 Cheesecake
+1 250 French Burritos
+1 250 Veg Wrap
+1 200 Steak Burger
+1 250 Caramel Custard
+1 150 Virgin Mohito
+1 250 Rosemary Soup
+2 350 Peppered Lemon Salad
+2 200 Rosetti and Pinaccio Fry
+2 250 Chicken Burger
+2 350 Pan Fried Momo
+2 350 Pepperoni Pizza
+2 150 Lemon Cake
+2 150 French Fries
+2 350 Mixed Chowmein
+2 250 Coffee custard
+3 350 Shepard's Pie
+3 200 Pan Fried Hakka Noodles
+3 250 Rosetti and Pinnacio Coffee
+3 350 Alfredo Steak Burger
+3 350 Sausage Pizza
+3 200 Pineapple Custard
+3 250 Mushroom and Pinaccio Salad
+3 250 Chocolate Shake
+4 150 Idli
+4 250 Tandoori Naan
+4 300 Dum Aloo
+4 200 Pan Fried Noodles
+4 150 Tandoori Chicken
+4 300 Veg Lababdaar Kebab
+4 180 Firni
+4 200 Paneer Tikka with Gravy
+4 250 Masala Paper Dosa
+5 300 Rosemary Salad
+5 350 Mashed Potatoes and Baked Aubergines
+5 300 Rosetti And Pinaccio Wrap
+5 200 Potobello Burger
+5 150 Cheesy Nachos
+5 250 Banana Pancake
+5 200 Caramel Custard
+5 150 Apple Cake with Maple Syrup
+6 150 Hot Coffee
+6 300 Elk Burger
+6 450 Nicoise Salad
+6 250 Chocolate Shake
+6 200 Salmon Steak Pizza
+6 200 Lemongrass Noodles
+6 100 Spicy Tacos
+6 150 Rosemary Apple Pie
