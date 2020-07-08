@@ -465,3 +465,386 @@ D13	ORDER PLACED
 3)	Call relevant functionality and ask if admin wants to place order.
 4)	If admin wants to place order, perform customer functions from 4 to 10.
 
+# TESTING: 
+## UNIT TESTING:
+Unit testing focuses on verifying the proper working of a component or a module individually. It tests the interface, the local data structures, the flow control and individual boundary conditions.
+An explicit Unit testing had been performed after development of the various modules before the time of integration. The various cases covered are:
+MODULE	TEST CASE 	EXPECTED RESULT
+File Handling	Open file (that exists) in read mode	Opens file successfully
+File Handling	Open file (that does not exist) in read mode	Displays error message
+File Handling	Open file (that exists) in write mode	Opens file successfully
+File Handling	Open file (that does not exist) in write mode	Creates new file
+File Handling	Copy from one file to another	Creates new file as a copy 
+Formatting	Opens file with multiple blanks and empty lines	Removes extraneous characters.
+Formatting	Opens file with no extra blanks and empty lines	Keeps the file unaltered.
+Formatting	Tokenize words with blankspace	Returns tokenized words.
+Formatting	Identify that the username is already present in database	Returns 1
+Formatting	Extract username and password from a line	Returns username and password.
+Formatting	Form a line using data separated by blank spaces	Returns the formatted line
+Admin	Adds valid restaurant details	Appends the details to the database.
+Admin	Adds invalid details such as negative price	Database remains unchanged
+Admin	Views Customer details	Customer details are print on the console
+Admin	Adds new admin	New admin detail is appended to the database.
+Customer	Views restaurant	Restaurant names are print to the console.
+Customer	Searches a food item already present	Restaurants serving the item are displayed.
+Customer	Searches a food item not present in the database.	Customer is asked to search for something else.
+Customer	Logs in successfully	Customer is given access
+Customer	Cannot log in	Customer is denied access and is asked to register.
+Customer	Registers with invalid details	Registration failed.
+Main module	Check interface	Interface should interact properly.
+
+## FUNCTIONAL TESTING:
+In order to understand the combination of input conditions and to identify the cause and effects of the various input statements, the cause-effect graphing technique used is as follows:
+CAUSE:
+	C1: Correct username and password
+	C2: Is Admin
+	C3: Item Available
+	C4: Order accepted by Restaurant
+	C5: Rider Available 
+	C6: Negative Price
+	C7: Fractional Quantity
+EFFECT:
+	A1: Generate Bill
+	A2: Invalid Credentials
+	A3: Order not accepted
+	A4: Add restaurant
+	A5: Add Admin
+	A6: Order rejected due to Unavailability of the Rider
+	A7: Order rejected due to Unavailability of restaurant / food item
+	A8: invalid Order
+	A9: Delete restaurant
+	1	2	3	4	5	6	7	8
+C1	N	Y	Y	Y	Y	Y	Y	Y
+C2		N	N	N	N	Y	N	N
+C3		N	Y	Y	Y	Y	Y	Y
+C4			N	Y	Y	Y	Y	Y
+C5				N	Y	Y	Y	Y
+C6					N	N	Y	Y
+C7					N	N		Y
+A1					X	X		
+A2	X							
+A3		X	X	X			X	X
+A4						X		
+A5						X		
+A6				X				
+A7		X	X					
+A8							X	X
+A9						X		
+		Decision table for the cause-effect graph
+
+## BASIS PATH TESTING:
+We try to estimate the cyclomatic complexity in order to find the number of independent paths that need to be considered in the basis set. An independent path is any path through the program that introduces atleast one new path or one new condition. The test cases must be designed such that each such independent path is covered.
+
+Cyclomatic complexity V(G) is given by:
+	Number of edges-number of nodes+2	=34-24+2=12
+
+# SYSTEM TESTING: 
+In this testing methodology, we try to follow the Path Coverage Criterion where we design test cases such that all paths of the control flow graph shown above is traversed at least once. 
+THE FLOW CONTROL GRAPH IS DEFINED BY THE FOLLOWING ACTIONS:
+1)	IF type = CUSTOMER
+2)	LOGIN is SUCCESSFUL GOTO 3 ELSE 26
+3)	INPUT case from user (1 to display restaurants, 2 to search by food item name, 3 to search by cuisine)
+4)	CASE 1: //display restaurants
+CASE 2: //search food item
+5)	READ item_name as input
+6)	IF item_name IS FOUND
+Print restaurants having the item GOTO 12
+7)	ELSE Print “Item not found”
+GOTO 3
+     CASE 3: //SEARCH BY CUISINE
+8)	READ cuisine_name
+9)	READ cuisine_name as input
+10)	IF cuisine_name IS FOUND
+Print restaurants offering the cuisine GOTO 12
+11)	ELSE Print “Item not found”
+GOTO 3
+ENDIF
+12)	ACCEPT order 
+13)	IF SUCCESSFUL PRINT BILL
+14)	ELSE GOTO 3
+ENDIF
+15)	ELSE //TYPE of USER is ADMIN
+16)	LOGIN is SUCCESSFUL GOTO 17 ELSE GOTO 1
+17)	INPUT case from ADMIN (1 to add restaurants, 2 to delete restaurants, 3 to view customer orders, 4 to view customer details, 5 to add new admin)
+18)	CASE 1: //Add restaurants
+19)	Read details from user and store in database
+20)	CASE 2: //delete restaurant
+21)	IF restaurant_name IS FOUND
+REMOVE restaurant
+	ELSE
+22)	Print Restaurant NOT FOUND, UNABLE TO DELETE
+GOTO 17
+23)	CASE 3: //view customer orders
+Print all customer orders
+24)	CASE 4: //view customer details
+Print all customer details
+25)	
+26)	CASE 5: //add admin
+Read details and add new admin
+27)	EXIT
+
+
+
+The various cases covered in this test set are:
+SL.NO.	PATH COVERED	PURPOSE
+1	1,2,3,5,6,12,13,26	Customer successfully searches by item name.
+2	1,2,3,8,9,10,12,13,26	Customer successfully searches by cuisine name.
+3	1,2,3,5,6,12,14,3	Customer while ordering enters negative quantity.
+4	1,2,3,5,6,12,14,3	Customer while ordering enters wrong or invalid item code.
+5	1,2,26	Customer is unable to login.
+6	1,2,3,5,7,3	Customer does not find item he/she is looking for.
+7	1,2,3,4,12,13,26	Customer is displayed all restaurant names and he/she places order successfully.
+8	1,2,3,8,9,11,3	Customer does not find the cuisine he/she is looking for.
+9	1,15,16,17,18,19,26	Admin successfully adds restaurants.
+10	1,15,16,17,20,21,26	Admin removes a restaurant from database.
+11	1,2,3,4,26	Customer views modified database.
+12	1,15,16,17,24,26	Admin views the customer details.
+13	1,15,16,17,25,26	Admin authenticates another admin.
+14	1,15,16,1	Admin cannot login successfully.
+15	1,15,16,17,20,21,22,17	Admin cannot delete a restaurant from database as it does not exist.
+16	1,15,16,17,18,19,17	Admin cannot add restaurant because of incorrect detail.
+
+
+
+
+
+## TEST CASE 1: 
+INPUT: <type= ‘CUSTOMER’, login=’SUCCESSFUL’, case =2, item= ‘PIZZA’, code= 6>
+EXPECTED OUTPUT: 
+The restaurants offering pizza are: (Kindly enter the number corresponding to the hotel as the hotel code)
+CODE 	RESTAURANT
+    2 		Hakuna Matata located at HoneyComb Maze
+   6 		Slink And Bardot located at MarshedMellow Street
+The menu corresponding to Slink And Bardot is:
+CODE 	PRICE	 ITEM
+1		150 		Hot Coffee
+2		 300		Elk Burger
+3		 450		Nicoise Salad
+4 		250 		Chocolate Shake
+5 		200 		Salmon Steak Pizza
+6 		200 		Lemongrass Noodles
+7 		100 		Spicy Tacos
+8 		150 		Rosemary Apple Pie
+INPUT: <code = 1, qty= 2, continue=1, code =6, qty=3, continue=1, code =7, qty=1, continue=0>
+
+EXPECTED OUTPUT: 
+The bill generated is as follows:
+ITEM NAME		ITEM PRICE 	QUANTITY 	TOTAL PRICE
+Hot Coffee				150			2			300
+Lemongrass Noodles		200			3			600
+Spicy Tacos				100 			1			100
+										____________
+                					NET AMOUNT PAYABLE    Rs: 1000
+Press 1 to confirm:
+<confirmation=1>
+ORDER IS PLACED.
+## ## TEST CASE 2: 
+INPUT: <type= ‘CUSTOMER’, login=’SUCCESSFUL’, case =3, cuisine= ‘CONTINENTAL’, code= 3>
+EXPECTED OUTPUT: 
+The restaurants offering continental cuisine are: (Kindly enter the number corresponding to the hotel as the hotel code)
+CODE 	RESTAURANT		LOCATION
+    1 		Bon Apetit 			Stardust Road
+    2 		Hakuna Matata 		 HoneyComb Maze
+     3 		Wasabi Morimoto 		Silver Canoe Street
+     5 		Toast And Tonic 		Confetti Street
+    6 		Slink And Bardot		MarshedMellow Street
+The menu corresponding to Wasabi Morimoto is:
+CODE 	PRICE	 ITEM
+1		 350		 Shepard's Pie
+2		 200		Pan Fried Hakka Noodles
+3 		250 		Rosetti and Pinnacio Coffee
+4		 350 		Alfredo Steak Burger
+5 		350 		Sausage Pizza
+6 		200 		Pineapple Custard
+7		 250 		Mushroom and Pinaccio Salad
+8		 250 		Chocolate Shake
+INPUT: <code = 3, qty= 2, continue=1, code =7, qty=2, continue=0>
+EXPECTED OUTPUT: 
+The bill generated is as follows:
+ITEM NAME			ITEM PRICE 	QUANTITY 	TOTAL PRICE
+Rosetti and Pinnacio Coffee	    250				2			500
+Mushroom and Pinaccio Salad	    250				2			500
+										____________
+                					NET AMOUNT PAYABLE    Rs: 1000
+Press 1 to confirm:
+<confirmation=0>
+ORDER IS CANCELLED. TRY AGAIN.
+## TEST CASE 3: 
+INPUT: <type= ‘CUSTOMER’, login=’SUCCESSFUL’, case =2, item= ‘CUSTARD’, code= 1>
+EXPECTED OUTPUT: 
+The restaurants offering custard are: (Kindly enter the number corresponding to the hotel as the hotel code)
+CODE 	RESTAURANT
+   1 		Bon Apetit located at Stardust Road
+   2 		Hakuna Matata located at HoneyComb Maze
+   3 		Wasabi Morimoto located at Silver Canoe Street	
+The menu corresponding to Bon Apetit is:
+CODE 	PRICE	 ITEM
+1 		250 		Yorkshire Patties
+2 		350 		Caesar Salad
+3 		150 		Cheesecake
+4 		250 		French Burritos
+5 		250 		Veg Wrap
+6 		200 		Steak Burger
+7 		250 		Caramel Custard
+8 		150 		Virgin Mojito
+INPUT: <code = 1, qty= -2, continue=1, code =6, qty=3, continue=1, code =7, qty=1, continue=0>
+EXPECTED OUTPUT: 
+QUANTITY CANNOT BE NEGATIVE. KINDLY PLACE YOUR ORDER AGAIN.
+## TEST CASE 4: 
+INPUT: <type= ‘CUSTOMER’, login=’SUCCESSFUL’, case =2, item= ‘CUSTARD’, code= 1>
+EXPECTED OUTPUT: 
+The restaurants offering custard are: (Kindly enter the number corresponding to the hotel as the hotel code)
+CODE 	RESTAURANT
+   1 		Bon Apetit located at Stardust Road
+   2 		Hakuna Matata located at HoneyComb Maze
+   3 		Wasabi Morimoto located at Silver Canoe Street	
+ 
+## TEST CASE 5: 
+INPUT: <type= ‘CUSTOMER’, login=’UNSUCCESSFUL’>
+EXPECTED OUTPUT: 
+INVALID USERNAME OR PASSWORD. PRESS 1 TO TRY AGAIN, PRESS 2 TO REGISTER AS A NEW USER.
+TEST CASE 6: 
+INPUT: <type= ‘CUSTOMER’, login=’ SUCCESSFUL’, case=2, item= ‘lasagna‘>
+EXPECTED OUTPUT: 
+SORRY THERE ARE NO RESTAURANTS SERVING LASAGNA. KINDLY TRY SEARCHING SOME OTHER ITEM.
+TEST CASE 7: 
+INPUT: <type= ‘CUSTOMER’, login=’SUCCESSFUL’, case =1, code= 1>
+EXPECTED OUTPUT: 
+The restaurants currently providing services are: (Kindly enter the number corresponding to the hotel as the hotel code)
+CODE 	RESTAURANT
+   1 		Bon Apetit located at Stardust Road
+   2 		Hakuna Matata located at HoneyComb Maze
+   3 		Wasabi Morimoto located at Silver Canoe Street	
+   4 		Tamarind located at Desi Lane
+   5 		Toast And Tonic located at Confetti Street
+   6 		Slink And Bardot located at MarshedMellow Street
+The menu corresponding to Bon Apetit is:
+CODE 	PRICE	 ITEM
+1 		250 		Yorkshire Patties
+2 		350 		Caesar Salad
+3 		150 		Cheesecake
+4 		250 		French Burritos
+5 		250 		Veg Wrap
+6 		200 		Steak Burger
+7 		250 		Caramel Custard
+8 		150 		Virgin Mojito
+INPUT: <code = 3, qty= 1, continue=1, code =6, qty=3>
+EXPECTED OUTPUT: 
+The bill generated is as follows:
+ITEM NAME			ITEM PRICE 	QUANTITY 	TOTAL PRICE
+Cheesecake				   150				1			150
+Steak Burger			    200				3			600
+										____________
+                					NET AMOUNT PAYABLE    Rs: 650
+## TEST CASE 8: 
+INPUT: <type= ‘CUSTOMER’, login=’ SUCCESSFUL’, case=3, cuisine= ‘LEBANESE‘>
+EXPECTED OUTPUT: 
+SORRY THERE ARE NO RESTAURANTS OFFERING LEBANESE FOOD. KINDLY TRY SEARCHING SOME OTHER CUISINE.
+## TEST CASE 9: 
+INPUT: <type= ‘ADMIN’, login=’SUCCESSFUL’, case =1, restaurant_name=’The Frying Pan’ restaurant_location=’Roasted Bean Road’>
+EXPECTED OUTPUT: 
+WELCOME ADMIN!
+The restaurant ’The Frying Pan’ has been added to our database successfully!
+ Enter menu:	
+INPUT:
+<item_name=’ Mac N Cheese‘, item_cost=’350‘,continue=1,
+item_name=’Apple Sausage Plate ‘, item_cost=’200‘,continue=1,
+item_name=’ Apple Cake‘, item_cost=’175‘,continue=1,
+item_name=’Crispy Baked Aubergiens ‘, item_cost=’275‘,continue=1,
+item_name=’Jalapenos Curry ‘, item_cost=’165‘,continue=1,
+item_name=’Portobello Burger ‘, item_cost=’450‘,continue=1,
+item_name=’ Caramel Custard‘, item_cost=’250‘,continue=1,
+item_name=’Chocolate Shake‘, item_cost=’200‘,continue=0>
+EXPECTED OUTPUT: 
+New restaurant is successfully added! Press 1 to continue as admin, 2 to log out.
+
+## TEST CASE 10: 
+INPUT: <type= ‘ADMIN’, login=’SUCCESSFUL’, case =2, restaurant_name=’Toast And Tonic’, confirm=’1’>
+EXPECTED OUTPUT: 
+WELCOME ADMIN!
+The restaurant with the name ’Toast And Tonic’ has been removed from our database. All data pertaining to it has been successfully removed!
+
+## TEST CASE 11: 
+INPUT: <type= ‘CUSTOMER’, login=’SUCCESSFUL’, case =1, code= 1>
+EXPECTED OUTPUT: 
+The restaurants currently providing services are: (Kindly enter the number corresponding to the hotel as the hotel code)
+CODE 	RESTAURANT
+   1 		Bon Apetit located at Stardust Road
+   2 		Hakuna Matata located at HoneyComb Maze
+   3 		Wasabi Morimoto located at Silver Canoe Street	
+   4 		Tamarind located at Desi Lane
+   5 		Slink And Bardot located at MarshedMellow Street
+## TEST CASE 12: 
+INPUT: <type= ‘ADMIN’, login=’SUCCESSFUL’, case =4>
+EXPECTED OUTPUT: 
+WELCOME ADMIN!
+The customer details are as follows:
+USERNAME	PASSWORD	NAME		ADDRESS		
+7823259951        	JonthanSeagull20	 Richard Bach 	15, Battleborn Street, Delhi 26
+Gabriel15 		Cholera 		Gabriel Marquez 	21, Christodora Road, Delhi 6
+Oscar15 		DorianGray 		Oscar Wilde		15, Euphoria Circle, Delhi 70
+RachQueen 		PrettyMean 		Rachel Green 	24, Plainsong Street, Delhi 90
+Janey 			PrideAndPrejudice Jane Austen 	98, Moonglow Road, Delhi 20
+Heathcliff 		WutheringHts15 	 Emily Brontee 	24, Barksins Street, Noida 66
+7890651245		Survival 		 Charles Darwin 	31, RipTide Street, Delhi 67
+OHenry 		TheLastLeaf 	William Porter 	14, Middlemarch Street, Delhi 62
+7890391652		StrangertoLife	 Prerna Dutta 	21, Mudbound Road, Delhi 21
+9830456721		Seagull 		 Richard Bach 	14, Scythe Street, Noida Sector 1
+9830987235		Gulliver		Jonathan Swift 	81, SteelHeart Street, Delhi 77
+Donald 		Duck 			Ugly Duckling	12, Murakami Road, Delhi 31
+
+
+## TEST CASE 13: 
+INPUT: <type= ‘ADMIN’, login=’SUCCESSFUL’, case =5, username=’NoniBai’, password=’LoveAll15’>
+EXPECTED OUTPUT: 
+WELCOME ADMIN!
+YOU HAVE SUCCESSFULLY ADDED AN ADMIN!
+THE ADMIN LIST IS AS FOLLOWS:
+NAME			PASSWORD
+PrernaDutta 	LoveAll15
+RajsabiSurya 	LoveAll15
+SachinKumar 	LoveAll15
+NoniBai 		LoveAll15
+
+## ## TEST CASE 14: 
+INPUT: <type= ‘ADMIN’, login=’UNSUCCESSFUL’>
+EXPECTED OUTPUT: 
+INVALID USERNAME OR PASSWORD. PRESS 1 TO TRY AGAIN AS AN ADMIN, PRESS 2 TO LOGIN AS A USER.
+## TEST CASE 15: 
+INPUT: <type= ‘ADMIN’, login=’SUCCESSFUL’, case =2, restaurant_name=’The Jalapeno Blast’, confirm=’1’>
+EXPECTED OUTPUT: 
+WELCOME ADMIN!
+The restaurant with the name ’The Jalapeno Blast’ is not present in the database and therefore, cannot be removed!
+## TEST CASE 16: 
+INPUT: <type= ‘ADMIN’, login=’SUCCESSFUL’, case =1, restaurant_name=’The Roasted Bean’ restaurant_location=’Nut Cracker Road’>
+EXPECTED OUTPUT: 
+WELCOME ADMIN!
+Enter menu:	
+INPUT:
+<item_name=’ Mac N Cheese‘, item_cost=’350‘,continue=1,
+item_name=’Apple Sausage Plate ‘, item_cost=’-200‘,continue=1,
+EXPECTED OUTPUT: 
+Cost cannot be negative, please try to enter restaurant details again!
+
+# CONCLUSION:
+## ANALYSIS:
+1)	UNDERSTANDABILITY: The modules defined are understandable and are provided with a detailed explanation.
+2)	RELIABILITY: The errors have been detected and removed from every stage.
+3)	ROBUSTNESS: The software is capable of handling unexpected situations.
+4)	MAINTAINABILITY: The software is well-structured and can be maintained and modified over a period of time.
+5)	RAPIDITY: The software has been developed in an incremental fashion, hence the first working module was developed within a week of the implementation phase.
+6)	ADAPTABILITY: The software, originally developed for LINUX, can be easily adapted to suit the WINDOWS environment without much modifications.
+7)	TAILORABILITY: The software can be easily modified to add new functionalities and to remove or modify the existing ones.
+
+### SOFTWARE DEVELOPMENT MODEL USED:
+An incremental model had been deemed to be the most suited model at the time of analysis. It is an evolutionary prototyping method that creates several versions of  the working system by providing enhancements (new features, added functionalities, error handling) in an incremental fashion. Another reason for incorporating the incremental model was that the requirements were not known at the beginning but were analysed and correctly identified after several walkthroughs and discussions. 
+### SCOPE OF IMPROVEMENT:
+1)	A separate section for identifying and segregating vegetarian and non-vegetarian items can be included.
+2)	A rating system can be introduced based on the customer feedback.
+3)	Advanced filters can be introduced that aim to sort data on the basis of average price of item, popular and most commonly visited restaurants, discounts, best rating, etc.
+
+
+
+
+
+
